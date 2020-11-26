@@ -1,0 +1,10 @@
+# editor
+.vscode/
+*~
+
+# python
+*.pyc
+__pycache__/
+
+# test
+test/
