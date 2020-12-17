@@ -316,7 +316,7 @@ def main():
 
   parser_init = command_parser.add_parser('init', help='clone and create architecture from page')
   parser_init.set_defaults(func=init_call)
-  parser_init.add_argument('root', help='the path of the root of the architecture', type=str, default='./', nargs='?')
+  parser_init.add_argument('root', help='the path of the root of the architecture', type=str, default='', nargs='?')
   parser_init.add_argument('url', help='url of the subject', type=str)
 
   parser_export = command_parser.add_parser('export', help='export the architecture')

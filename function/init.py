@@ -4,11 +4,12 @@ import re
 import pathlib
 
 import settings
-from git import Repo, GitCommandError
+from git import Repo, Git, GitCommandError
 from archi import Struct, Folder, File
 from utils import remove_indent
 
 def init_call(args):
+  path : str = args.root
   subject = get_subject(args.url)
 
   git_url_patern = get_git(subject.get_text())
@@ -17,13 +18,16 @@ def init_call(args):
   git_url = replace_usernaname(git_url_patern, settings.LOGIN)
   print(f"\033[1;32m✔\033[0m get repository url : \033[90m{git_url}\033[0m")
 
-  struct : Folder = get_struct(subject, args.root)
+  if not path:
+    path = re.findall(r'([^/\\]+)(.git)?$', git_url)[0][0]
+
+  struct : Folder = get_struct(subject, path)
   print(f"\033[1;32m✔\033[0m structur parsed")
 
   files = get_files(subject)
   print(f"\033[1;32m✔\033[0m {len(files)} files founds")
 
-  git_clone(git_url, args.root)
+  git_clone(git_url, path)
   print(f"\033[1;32m✔\033[0m clone repository")
 
   struct.create(files = files)
@@ -66,7 +70,8 @@ def git_clone(url : str, path : str):
     print(f"\033[1;31m✘ ERROR:\033[0m can't create root folder \033[90m{path}\033[0m ({e})")
     exit(1)
   try:
-    Repo.clone_from(url, path)
+    if path:
+     Repo.clone_from(url, path)
   except GitCommandError as e:
     print(f"\033[1;31m✘ ERROR:\033[0m can't clone repository ({e.stderr[:-1].strip()})")
     exit(1)
