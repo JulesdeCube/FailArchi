@@ -14,7 +14,18 @@ class File(Struct):
     '.gitignore': '🙈',
   }
 
-  default_files = {}
+  default_files = {
+    '.gitignore':'\n'.join([
+      '# editor',
+      '.vscode',
+      '*~',
+      '',
+      '# build',
+      '*.d',
+      '*.o',
+      '',
+      '# project'])
+  }
 
   overwrite_files = {
     'AUTHORS':
