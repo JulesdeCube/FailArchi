@@ -5,7 +5,7 @@
     <img src="https://img.shields.io/badge/python-3-blue?style=flat-square"/>
 </p>
 
-Failarchi is a small programe to automaticlie create architecture base on
+FailArchi is a small programe to automaticlie create architecture base on
 
 ## ⭐ Feature
 
@@ -20,7 +20,7 @@ Failarchi is a small programe to automaticlie create architecture base on
 ### Install
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/JulesdeCube/failachi/main/install.sh?token=AJ5HITCCNICMUSS5PQQS7IS74SRX4 | bash
+wget -qO- https://raw.githubusercontent.com/JulesdeCube/FailArchi/main/install.sh?token=AJ5HITCCNICMUSS5PQQS7IS74SRX4 | bash
 ```
 
 ### Run
@@ -29,4 +29,4 @@ wget -qO- https://raw.githubusercontent.com/JulesdeCube/failachi/main/install.sh
 failarchi
 ```
 ## 👪 Contributor
-[![see Contributor](https://contributors-img.web.app/image?repo=JulesdeCube/failachi)](https://github.com/JulesdeCube/failachi/graphs/contributors)
+[![see Contributor](https://contributors-img.web.app/image?repo=JulesdeCube/FailArchi)](https://github.com/JulesdeCube/FailArchi/graphs/contributors)
