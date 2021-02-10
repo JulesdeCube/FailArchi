@@ -1,3 +1,3 @@
-FIRSTNAME = 'Jules'
-LASTNAME = 'Lefebvre'
-LOGIN = 'jules.lefebvre'
+FIRSTNAME = 'Fist name'
+LASTNAME = 'Last name'
+LOGIN = 'login'
