@@ -83,14 +83,19 @@ class Struct(object):
     from .folder import Folder
 
     name_html = doc.findChild()
-    name : str = Struct.normalize_name((name_html if name_html else doc).get_text())
+    name : str = (name_html if name_html else doc).get_text()
     if not name:
       raise ValueError('name c\'ant be null')
     sub_struct : BeautifulSoup = doc.find('ul')
 
-    if not sub_struct:
+    if sub_struct:
+      try:
+        children : List[Struct] = [ Struct.from_HTML(child) for child in sub_struct.findChildren(recursive=False) ]
+      except ValueError as e:
+        raise ValueError(f"{name}/{e}")
+      else:
+        return Folder(name, children)
+    elif name.endswith('/'):
+      return Folder(name)
+    else:
       return File(name)
-    try:
-      return Folder(name, [ Struct.from_HTML(child) for child in sub_struct.findChildren(recursive=False) ])
-    except ValueError as e:
-      raise ValueError(f"{name}/{e}")
