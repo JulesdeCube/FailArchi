@@ -290,7 +290,6 @@ def main():
   parser.set_defaults(func=lambda args: parser.print_help())
   optional_group = parser.add_argument_group('optional arguments')
   optional_group.add_argument('-h', '--help', action='help', help='show this help message and exit')
-  optional_group.add_argument('-v', '--verbose', help='output verbosity', action='count')
   optional_group.add_argument('--version', action='version', version=f'Fail archi v{__version__} by Jules Lefebvre <jules.lefebvre@epita.fr>')
 
   command_parser  = parser.add_subparsers(title='command', help='command to execute')
@@ -314,10 +313,12 @@ def main():
   parser_init = command_parser.add_parser('init', help='clone and create architecture from page')
   parser_init.set_defaults(func=init_call)
   parser_init.add_argument('root', help='the path of the root of the architecture', type=str, default='', nargs='?')
+  parser_init.add_argument('-v', '--verbose', help='all the print parameter', action='store_true')
   parser_init.add_argument('url', help='url of the subject', type=str)
 
   parser_export = command_parser.add_parser('export', help='export the architecture')
   parser_export.set_defaults(func=export)
+  parser_export.add_argument('-v', '--verbose', help='all the print parameter', action='store_true')
 
   args = parser.parse_args()
   args.func(args)
