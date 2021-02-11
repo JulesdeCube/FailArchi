@@ -8,15 +8,24 @@ from git import Repo, Git, GitCommandError
 from archi import Struct, Folder, File
 from utils import remove_indent
 
+from archi.action import Action
+
 def init_call(args):
   path : str = args.root
   subject = get_subject(args.url)
+  if args.verbose:
+    print(f"\033[1;32m✔\033[0m fetch subject from \033[90m{args.url}\033[0m")
 
   git_url_patern = get_git(subject.get_text())
-  print(f"\033[1;32m✔\033[0m get repository url patern : \033[90m{git_url_patern}\033[0m")
+  if args.verbose:
+    print(f"\033[1;32m✔\033[0m get repository url patern : \033[90m{git_url_patern}\033[0m")
 
   git_url = replace_usernaname(git_url_patern, settings.LOGIN)
-  print(f"\033[1;32m✔\033[0m get repository url : \033[90m{git_url}\033[0m")
+  print("\033[1;32m✔\033[0m get repository url", end='')
+  if args.verbose:
+    print(f" : \033[90m{git_url}\033[0m")
+  else:
+    print()
 
   if not path:
     path = re.findall(r'([^/\\]+)(.git)?$', git_url)[0][0]
@@ -25,13 +34,17 @@ def init_call(args):
   print(f"\033[1;32m✔\033[0m structur parsed")
 
   files = get_files(subject)
-  print(f"\033[1;32m✔\033[0m {len(files)} files founds")
+  if args.verbose:
+    print(f"\033[1;32m✔\033[0m {len(files)} files founds :")
+    for file in files:
+      print(f'- \033[90m{file}\033[0m')
+
 
   git_clone(git_url, path)
   print(f"\033[1;32m✔\033[0m clone repository")
 
-  struct.create(files = files)
-  print(f"\033[1;32m✔\033[0m create project structure")
+  status = struct.create(files = files, verbose=args.verbose)
+  print(f"{status.color}{status.icon}\033[0m create project structure")
 
 
 def get_subject(url : str) -> BeautifulSoup:
@@ -44,7 +57,6 @@ def get_subject(url : str) -> BeautifulSoup:
     print(f"\033[1;31m✘ ERROR:\033[0m {e}")
     exit(1)
   else:
-    print(f"\033[1;32m✔\033[0m fetch subject from \033[90m{url}\033[0m")
     subject_html = fp.read().decode("utf8")
     fp.close()
     return BeautifulSoup(subject_html, features="html.parser")
