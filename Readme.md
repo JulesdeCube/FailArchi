@@ -1,7 +1,7 @@
 <h1 align="center">FailArchi - 🔧</h1>
 <p align="center">
-    <img src="https://img.shields.io/github/v/tag/JulesdeCube/failachi?label=version&style=flat-square"/>
-    <img src="https://img.shields.io/github/license/JulesdeCube/failachi?style=flat-square"/>
+    <img src="https://img.shields.io/github/v/tag/JulesdeCube/FailArchi?label=version&style=flat-square"/>
+    <img src="https://img.shields.io/github/license/JulesdeCube/FailArchi?style=flat-square"/>
     <img src="https://img.shields.io/badge/python->3.8-blue?style=flat-square"/>
 </p>
 
