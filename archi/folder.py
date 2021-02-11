@@ -36,10 +36,17 @@ class Folder(Struct):
   def create_children(self, parrent : str = '', action : Action = Action.COMPLET, prefix : str = '', last_prefix : str = '', **kwargs):
     child_before = prefix + ( '│ ' if last_prefix == '├─' else '  ')
     lenght = len(self.children)
+
+    status = Action.SKIP
+
     for i in range(lenght - 1):
-      self.children[i].create(parrent + self.name + '/', action, child_before,  '├─', **kwargs)
+      status = max(status, self.children[i].create(parrent + self.name + '/', action, child_before,  '├─', **kwargs))
+
     if lenght:
-      self.children[lenght - 1].create(parrent + self.name + '/', action, child_before,  '└─', **kwargs)
+      status = max(status, self.children[-1].create(parrent + self.name + '/', action, child_before,  '└─', **kwargs))
+
+    return status
+
 
   def contains(self, x : str) -> bool:
     return self.__contains__(x, True)

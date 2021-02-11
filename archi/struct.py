@@ -25,8 +25,13 @@ class Struct(object):
   def create(self, parrent : str = '', parrent_action : Action = Action.COMPLET, prefix : str = '', last_prefix : str = '', **kwargs):
     path : pathlib.Path = self.update(parrent)
     action : Action = None
+    verbose : bool = kwargs.get('verbose', False)
+
     child_before = prefix + ( '│ ' if last_prefix == '├─' else '  ')
-    print(self.__str__(prefix, last_prefix, reclusive=False), end='')
+
+    if verbose:
+      print(self.__str__(prefix, last_prefix, reclusive=False), end='')
+
     if parrent_action == Action.ABOARDED:
       action = Action.ABOARDED
     elif self.status == State.EXIST:
@@ -35,7 +40,11 @@ class Struct(object):
       self.create_element(path, **kwargs)
       action = Action.COMPLET
     elif self.status == State.WONG_TYPE:
-      if choice_message(" wong type, replace it ?"):
+      if not verbose:
+        question : str = parrent + self.name
+      question = " wong type, replace it ?"
+
+      if choice_message(question , verbose):
         self.remove(path)
         self.create_element(path, **kwargs)
         action = Action.COMPLET
@@ -47,17 +56,18 @@ class Struct(object):
       raise NotImplementedError(self.status)
 
     self.update(parrent)
-    print('\r\033[K', end='')
-    print(self.__str__(prefix, last_prefix, reclusive=False, skip=action == Action.SKIP))
+    if verbose:
+      print('\r\033[K', end='')
+      print(self.__str__(prefix, last_prefix, reclusive=False, skip=action == Action.SKIP))
 
-    self.create_children(parrent, action, prefix, last_prefix, **kwargs)
-    return action
+    child_status = self.create_children(parrent, action, prefix, last_prefix, **kwargs)
+    return max(action, child_status)
 
   def create_element(self, path : pathlib.Path, **kwargs):
     raise NotImplementedError()
 
   def create_children(self, parrent : str = '', action : Action = Action.COMPLET, prefix : str = '', last_prefix : str = '', **kwargs):
-    pass
+    return Action.SKIP
 
   def __str__(self, **kwargs) -> str:
     color = '\033[90m' if kwargs.get('skip', False) else self.status.color
